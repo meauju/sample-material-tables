@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {SelectionModel} from '@angular/cdk/collections';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {MatSlideToggleChange, MatSort, MatTableDataSource} from '@angular/material';
 import {filter} from "lodash-es";
 
 
@@ -25,6 +25,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
     {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne', selectable: true},
 ];
 
+const initialSelection = [];
+const allowMultiSelect = false;
 
 @Component({
     selector: 'app-select-table',
@@ -32,9 +34,11 @@ const ELEMENT_DATA: PeriodicElement[] = [
     styleUrls: ['./select-table.component.scss']
 })
 export class SelectTableComponent implements OnInit {
+
+    isMultiSelect = allowMultiSelect;
     displayedColumns: string[] = ['select', 'selectable', 'position', 'name', 'weight', 'symbol'];
     dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
-    selection = new SelectionModel<PeriodicElement>(true, []);
+    selection = new SelectionModel<PeriodicElement>(this.isMultiSelect, initialSelection);
 
     @ViewChild(MatSort) sort: MatSort;
 
@@ -76,4 +80,8 @@ export class SelectTableComponent implements OnInit {
         return (row === undefined || row.selectable === undefined) ? true : row.selectable;
     }
 
+    modifySelectionTableBehaviour($event: MatSlideToggleChange) {
+        this.isMultiSelect = $event.checked;
+        this.selection = new SelectionModel<PeriodicElement>(this.isMultiSelect, (this.isMultiSelect ? this.selection.selected : []) );
+    }
 }
