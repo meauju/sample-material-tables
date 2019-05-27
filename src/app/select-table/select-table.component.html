@@ -13,62 +13,113 @@
   <h4>Table</h4>
   <div class="example-loading-shade"
        *ngIf="loading$|async">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
-<table mat-table [dataSource]="data$|async" matSort (matSortChange)="sortChange($event)" [matSortActive]="sort$|async" [matSortDirection]="direction$|async" class="mat-elevation-z8">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+  <table mat-table
+         [dataSource]="data$|async"
+         matSort
+         (matSortChange)="sortChange($event)"
+         [matSortActive]="sort$|async"
+         [matSortDirection]="direction$|async"
+         class="mat-elevation-z8">
 
-  <!-- Checkbox Column -->
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="$event ? masterToggle() : null"
-                    [checked]="isAllElementSelected$|async"
-                    [indeterminate]="hasAtLeastOneSelectedElement$|async"
-                    *ngIf="isMultiSelect">
-      </mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()"
-                    (change)="toggleRow(row)"
-                    [checked]="(selection$|async)?.has(row.position)"
-                    [disabled]="!isSelectable(row)">
-      </mat-checkbox>
-    </td>
-  </ng-container>
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [checked]="isAllElementSelected$|async"
+                      [indeterminate]="hasAtLeastOneSelectedElement$|async"
+                      *ngIf="isMultiSelect"
+                      [id]='"select-all-row-data"'>
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row; let i = index;">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      (change)="toggleRow(row)"
+                      [checked]="(selection$|async)?.has(row.position)"
+                      [disabled]="!isSelectable(row)"
+                      [id]="'select-row-data-'+(i+1)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
 
-  <!-- Selectable status Column -->
-  <ng-container matColumnDef="selectable">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Selectable</th>
-    <td mat-cell *matCellDef="let element"> {{((element.selectable | json) || 'true')}} </td>
-  </ng-container>
+    <!-- Selectable status Column -->
+    <ng-container matColumnDef="selectable">
+      <th mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header>
+        Selectable
+      </th>
+      <td mat-cell
+          *matCellDef="let element; let i = index;"
+          [id]="'row-data-'+(i+1)+'-selectable'">
+        {{((element.selectable | json) || 'true')}}
+      </td>
+    </ng-container>
 
-  <!-- Position Column -->
-  <ng-container matColumnDef="position">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> No.</th>
-    <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-  </ng-container>
+    <!-- Position Column -->
+    <ng-container matColumnDef="position">
+      <th mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header>
+        No.
+      </th>
+      <td mat-cell
+          *matCellDef="let element; let i = index;"
+          [id]="'row-data-'+(i+1)+'-position'">
+        {{element.position}}
+      </td>
+    </ng-container>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name</th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-  </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header>
+        Name
+      </th>
+      <td mat-cell
+          *matCellDef="let element; let i = index;"
+          [id]="'row-data-'+(i+1)+'-name'">
+        {{element.name}}
+      </td>
+    </ng-container>
 
-  <!-- Weight Column -->
-  <ng-container matColumnDef="weight">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Weight</th>
-    <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-  </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="weight">
+      <th mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header>
+        Weight
+      </th>
+      <td mat-cell
+          *matCellDef="let element; let i = index;"
+          [id]="'row-data-'+(i+1)+'-weight'">
+        {{element.weight}}
+      </td>
+    </ng-container>
 
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="symbol">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Symbol</th>
-    <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-  </ng-container>
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="symbol">
+      <th mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header>
+        Symbol
+      </th>
+      <td mat-cell *matCellDef="let element; let i = index;"
+          [id]="'row-data-'+(i+1)+'-symbol'">
+        {{element.symbol}}
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-  </tr>
-</table>
+    <tr mat-header-row
+        *matHeaderRowDef="displayedColumns">
+
+    </tr>
+    <tr mat-row
+        *matRowDef="let row; columns: displayedColumns;">
+    </tr>
+  </table>
 </div>
 <h4>Selected row data ({{ (selection$|async)?.size}}):</h4>
 <pre>{{selection$|async|json}}</pre>

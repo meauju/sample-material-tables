@@ -1,8 +1,7 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {SelectionModel} from '@angular/cdk/collections';
-import {MatSlideToggleChange, MatSort, MatTableDataSource} from '@angular/material';
-import {filter, orderBy, startsWith} from "lodash-es";
-import {BehaviorSubject, combineLatest, interval, Observable, zip} from "rxjs";
+import {Component} from '@angular/core';
+import {MatSlideToggleChange} from '@angular/material';
+import {filter, orderBy} from "lodash-es";
+import {BehaviorSubject, combineLatest, Observable} from "rxjs";
 import {map, shareReplay, startWith, take} from "rxjs/operators";
 import {Set} from 'immutable';
 
@@ -28,7 +27,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
     {position: '10', name: 'Neon', weight: 20.1797, symbol: 'Ne', selectable: true},
 ];
 
-const allowMultiSelect = true;
+const allowMultiSelect = false;
 
 @Component({
     selector: 'app-select-table',
@@ -45,7 +44,7 @@ export class SelectTableComponent {
     public loading$: Observable<boolean>;
 
     public sort$ = new BehaviorSubject('name');
-    public direction$ = new BehaviorSubject<''|'asc'|'desc'>('desc');
+    public direction$ = new BehaviorSubject<''|'asc'|'desc'>('');
     public selection$ = new BehaviorSubject<Set<string>>(Set());
     public data$: Observable<PeriodicElement[]>;
     public isAllElementSelected$: Observable<boolean>;

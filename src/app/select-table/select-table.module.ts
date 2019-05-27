@@ -8,7 +8,7 @@ import {
     MatSortModule,
     MatTableModule
 } from '@angular/material';
-import {BrowserAnimationsModule, NoopAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
     declarations: [SelectTableComponent],
